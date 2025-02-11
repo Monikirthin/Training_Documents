@@ -5,6 +5,8 @@ Day 8 : 6th Feb. 2025
 **********************
   Functions in Linux shell scripts:
 	- Functions are set of instructions that are repeatedly used within the script or out of the script
+	- user defined functions --> we will eb creating as part of program
+	- pre defined functions --> pre defined by the linux
 
  Program : 
  	--> User input validation
@@ -36,6 +38,40 @@ print_hello
 print_hello
 
 #print_hello
+
+sed : used for string handling
+	--> used to find and replace the string of the character
+Length of a vatiable
+
+leng1 = strlen(var1) --> identify the length of the variable
+
+
+Test server configuration:
+
+	 if the team wants to install on multiple vm
+		apt install jdk -y
+		apt tomcat -y
+		systemctl start tomcat.service
+		apt install testing
+		apt install selenium	
+
+start the test servers --> schedule this to run at 8am
+	aws cli commands to start the aws ec2 instances
+
+	for example:
+		apt install jdk -y
+		apt tomcat -y
+		systemctl start tomcat.service
+		apt install testing
+		apt install selenium
+
+stop test servers --> schedule this to run at 10pm
+	aws cli commands to stop the aws ec2 instances
+
+	environments ::::
+	Non prod (Business  hrs - 8am -10pm)								prod (24*7)
+	  dev, test, build, qa					
+
 
 
 	Fundamentals of Python :
