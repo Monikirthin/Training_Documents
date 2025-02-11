@@ -3,6 +3,40 @@
 **********************
 Day 8 : 6th Feb. 2025 
 **********************
+  Functions in Linux shell scripts:
+	- Functions are set of instructions that are repeatedly used within the script or out of the script
+
+ Program : 
+ 	--> User input validation
+		- Read User input
+		- check if the input is numeric
+
+ As script to show the usage of function:
+
+source code:
+
+Print_hello
+
+#!/bin/bash
+#
+# Function definition
+function print_hello()
+{
+	echo "======="
+	echo "Hello  "
+	echo "======'
+}
+#call the function - print_hello
+
+print_hello
+
+print_hello
+print_hello
+print_hello
+print_hello
+
+#print_hello
+
 
 	Fundamentals of Python :
 	
