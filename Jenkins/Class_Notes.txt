@@ -165,6 +165,7 @@ Day 17 : 21st Feb. 2025
 			- Security Management 
 			- Credential Management 
 			- Create CICD Pipeline Projects for all the Applications
+			- Jenkins Master/Slave Configuration
 			- Onboard the Applications to Jenkins CICD Process 
 			- TroubleShoot the Issues
 			- Periodically take care of the Backup of Jenkins Projects and Services 
@@ -193,4 +194,487 @@ Day 17 : 21st Feb. 2025
 			
 			
 			Jenkins run as a service - it can be accessible using Web Browser 
-			Jenkins by default run in port 8080		
+			Jenkins by default run in port 8080
+				
+			
+
+************************
+Day 18 : 24th Feb. 2025 
+************************
+	
+			- Plugins Management 
+				- Enable/Disable/Uninstall/Install/Upgrade the Plugins 
+				
+			- Global System Configurations 
+			- Tools Management 
+			- User Management 				# To enable User Authentication
+			- Security Management 			# To enable User Authorization
+			- Credential Management 
+			
+			
+	- Create Jenkins Project/Job :
+	
+		Jenkins Projects / Jobs :
+		
+			- Freestyle Project 			# Manual Configurations using GUI 	- Not Reusable
+			
+			- Pipeline Project 				# Done using Groovy Scripts			- This can be reusable 
+			
+			
+		Handling Variables ::
+		
+			- Environment Variables 		# Pre-defined system variables can be used in the jenkins project
+
+
+				echo "jenkins-${JOB_NAME}-${BUILD_NUMBER}"
+				
+					"${var_name}"
+			
+			
+			- User Defined Variables 		# User Defined 	
+				
+					String envi = "QA"
+					
+
+		TroubleShoot the Issues
+		
+		
+		
+Next :	
+	- Pipeline Project :::
+		
+
+************************
+Day 19 : 25th Feb. 2025 
+************************
+
+	- Create CICD Pipeline Projects
+	
+	- Jenkins Master/Slave Configuration
+	
+	
+	Application Build and Deployments :
+	
+	Jenkins Pipeline :
+	
+	Stages :
+		Stage1 :
+			Task1 
+		Stage2 : 
+			Task1
+			Task2 
+			
+			
+	Pipeline Projects :
+	
+		- Scripted Pipelines 	
+		
+		- Declarative Pipelines 
+		
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello1') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Hello2') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+
+
+Java Maven Web Application : Build and Deploy to Target Environment using Jenkins Pipeline.
+
+pipeline {
+    agent any
+
+    stages {
+        stage('SCM_Checkout') {
+            steps {
+                echo 'Perform SCM Check out'
+            }
+        }
+        stage('Application Build') {
+            steps {
+                echo 'Perform Application Build using Maven'
+            }
+        }
+        stage('Deploy to Target Server') {
+            steps {
+                echo 'Perform Application Deployment to Target - Tomcat Server'
+            }
+        }
+    }
+}
+
+
+Master-Slave Archetecture :::
+
+	Jenkins_Master Node  (VM)			==> Is used create Jenkins Projects/Pipelines Jobs to Automate the process.
+											Is used to schedule the builds in the Jenkins Slave Nodes.
+											
+		Jenkins_Slave Node (VM)			==> Used of Perform Application Build 
+		
+		
+		
+	Jenkins_Master (VM) 				==> Install git,jdk,jenkins 
+	
+		Jenkins_Slave Node (VM)			==> Install git,jdk,maven
+											Create a User ID 
+											Create Key Pair
+		
+		
+		
+	Remote Server Handling :::
+	
+		Using SSH :
+		
+			-> User_Name 
+			-> Host_Name 			# Private IP Address of Slave Node1
+			-> Key_Pair
+				- Public Key 
+				- Private Key
+
+
+pipeline {
+    agent { label 'slave1' }
+
+    stages {
+        stage('SCM_Checkout') {
+            steps {
+                echo 'Perform SCM Check out'
+				git 'https://github.com/PaperLive-DevOps-Jan25/java-mvn-springbootapp.git'
+            }
+        }
+        stage('Application Build') {
+            steps {
+                echo 'Perform Application Build using Maven'
+				sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Target Server - QA Testing') {
+            steps {
+                echo 'Perform Application Deployment to Target - Tomcat Server'
+            }
+        }
+    }
+}
+
+
+Deploy the Artifacts to Target Server :
+
+
+Deployment ?? 			# Copy 
+
+	Target Server / Deployment / Hosted Server 
+	
+	Web Application Servers(WAS) - Tomcat / nginx / apache httpd			# Used to execute / run the Web application artifacts 
+	
+	
+	
+	How to configure the Tomcat Web Application Server (WAS) 
+	
+	
+	Jenkins_Master (VM) 				==> Install git,jdk,jenkins 
+	
+		Jenkins_Slave Node (VM)			==> Install git,jdk,maven
+											Create a User ID 
+											Create Key Pair	
+											
+	Tomcat_Server (VM)					==> jdk, Tomcat WAS
+											Create a User ID
+		                                    Create Key Pair	
+											
+	
+	Install Publish Over SSH Plugins in Jenkins Master Node.	
+			- Is to establish secure connection and copy the artifacts to the Remote Servers through Jenkins_Master
+			
+			
+			Goto Plugins Manager - under Available Plugins tab - search for Publihs over ssh plugin and install.
+			Enable Restart upon installation 
+			
+			
+			
+	Deployment ::
+	
+	
+		Source Server: 													Target Server:
+		
+			Jenkins_Slave_Node1 											Tomcat_Server
+			
+				Source Path:														Target Path:
+
+					target/*.war													 	/opt/tomcat/webapps/
+																						
+																						/opt/tomcat/webapps/*.war
+			
+				
+Next :
+
+		Configure Tomcat Server 
+		Create CICD Pipeline 
+		
+		Build Trigger 
+		
+		Email Notifications 		
+
+
+************************
+Day 20 : 27th Feb. 2025 
+************************
+
+	Configure Tomcat Server 
+	Create CICD Pipeline 
+	
+	Build Trigger 
+	
+	Email Notifications 	
+	
+	
+	Jenkins_Master (VM) 				==> Install git,jdk,jenkins 
+	
+		Jenkins_Slave Node (VM)			==> Install git,jdk,maven
+											Create a User ID 
+											Create Key Pair	
+											
+	Tomcat_Server (VM)					==> jdk, Tomcat WAS
+											Create a User ID
+		                                    Create Key Pair	
+											
+	Install Publish Over SSH Plugins in Jenkins Master Node.	
+			- Is to establish secure connection and copy the artifacts to the Remote Servers through Jenkins_Master
+			
+			
+			Goto Plugins Manager - under Available Plugins tab - search for Publish over ssh plugin and install.
+			Enable Restart upon installation 
+
+pipeline {
+    agent { label 'slave1' }
+
+    stages {
+        stage('SCM_Checkout') {
+            steps {
+                echo 'Perform SCM Check out'
+				git 'https://github.com/PaperLive-DevOps-Jan25/java-mvn-springbootapp.git'
+            }
+        }
+        stage('Application Build') {
+            steps {
+                echo 'Perform Application Build using Maven'
+				sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Target Server - QA Testing') {
+            steps {
+				script{
+					sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat_Server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: 'target/', sourceFiles: 'target/demo-1.0-SNAPSHOT.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+				}                
+            }
+        }
+    }
+}
+
+sshPublisher(publishers: [sshPublisherDesc(configName: 'Tomcat_Server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: 'target/', sourceFiles: 'target/demo-1.0-SNAPSHOT.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('SCM_Checkout') {
+            steps {
+                echo 'Perform SCM Check out'
+            }
+        }
+        stage('Application Build') {
+            steps {
+                echo 'Perform Application Build using Maven'
+            }
+        }
+        stage('Deploy to QA Server') {
+            steps {
+                echo 'Perform Application Deployment to Target - Tomcat Server'
+            }
+        }
+        stage('Deploy to UAT Server') {
+            steps {
+                echo 'Perform Application Deployment to Target - Tomcat Server'
+            }
+        }
+        stage('Deploy to PROD Server') {
+            steps {
+                echo 'Perform Application Deployment to Target - Tomcat Server'
+            }
+        }
+    }
+}
+
+
+Build Trigger :::
+
+	Build Triggers :::
+	
+		It used to Automate the Job Execution.
+		
+		-> Build Periodic					# https://crontab.guru/
+		
+			- Used to trigger the jenkins jobs irrespective of code change. - It is not meant for CI/CD.
+			- The build is sheduled based on the crontab 
+			
+			Non-Prod Environments 										Prod Environment
+			 Shd be available only during business hrs 
+				DEV Servers 
+				BUILD
+				QA/UAT 														Prod Servers 
+				
+				
+				Start_Servers_Job: 8AM 
+				Stop_Servers_Job: 10PM 
+		
+		
+		-> Github Webhook 
+		
+			- Used to trigger the jenkins Job whenever there is any commit happened in the remote repository
+			- github webhook has be configured in the remote repository by using the jenkins URL
+			
+			PayLoad URL : http://43.204.228.135:8080/github-webhook
+		
+		
+		-> Poll-SCM 
+		
+			- It is used to trigger the build based on the crontab only if there is any changes happened in the source-code repository.
+			
+			Eg.: 
+			
+				Test Cycles :::
+				
+				
+				8AM - 12PM - 3PM 
+				
+
+Next :::
+
+	Email Notifications 
+	
+	Docker Module
+
+
+
+************************
+Day 21 : 28th Feb. 2025 
+************************
+
+	Email Notifications using Jenkins Pipeline :
+	
+	1. Setup the Email Server
+		- Create Account - Gmail 
+		- Enabled with the App Token/Access Token	# Credential to config in Jenkins.
+		
+	2. Login to Jenkins Server 
+		- Managed Jenkins --> Email Notifications --> Add Email Server Configurations.
+		- Test the Email Configurations
+
+
+
+	Email Notifications :::::::
+	
+		In Jenkins Pipeline Jobs, Email Notifications can be done as a post build action.
+		
+		
+		Stage{}
+		post{
+			success 
+			failure 
+			abort
+		}
+		
+		
+
+Login to Gmail :::
+
+Click Manage Account Settings
+
+@Left side panel - select Security 
+
+Two Way Authentication - MFA --> mobile#
+
+App Password = 16 bytes of App Password. vaufxwhdbtnlltzr vauf xwhd btnl ltzr
+
+What ? window
+Which Appln - email	
+
+	
+To Setup the Email Notifications, First we need to set the Email Server in the Jenkins System configuration :
+
+goto manage jenkins -> system configuration 
+
+goto Email Notification 
+		
+SMTP Server :
+smtp.gmail.com
+
+SMTP Authentication
+
+SMTP Port :: 465
+
+
+User Name : <EMail_ID>
+
+Password : <App Password>
+
+pipeline {
+    agent any
+
+    stages {
+        stage('SCM_Checkout') {
+            steps {
+                echo 'Perform SCM Check out'
+				git 'https://github.com/PaperLive-DevOps-Jan25/java-mvn-springbootapp.git'
+            }
+             post {
+                failure {
+                  sh "echo 'Send mail on failure'"
+					mail bcc: 'l@gmail.com', body: 'Jenkins Jobs Status ', cc: 'l@gmail.com', from: '', replyTo: '', subject: 'SCM-Checkout Failed ', to: 'l@gmail.com'
+                }
+              }
+        }
+        stage('Application Build') {
+            steps {
+                echo 'Perform Application Build using Maven'
+				sh 'mvn clean package'
+            }
+             post {
+                failure {
+                  sh "echo 'Send mail on failure'"
+					mail bcc: 'l@gmail.com', body: 'Jenkins Jobs Status ', cc: 'l@gmail.com', from: '', replyTo: '', subject: 'Build Failed ', to: 'l@gmail.com'
+                }
+              }
+        }
+        stage('Deploy to QA Server') {
+            steps {
+                echo 'Perform Application Deployment to Target - Tomcat Server'
+            }
+             post {
+                success {
+                  sh "echo 'Send mail on Success'"
+					mail bcc: 'l@gmail.com', body: 'Jenkins Jobs Status ', cc: 'l@gmail.com', from: '', replyTo: '', subject: 'Deployment Successful ', to: 'l@gmail.com'
+                }
+                failure {
+                  sh "echo 'Send mail on Failure'"
+					mail bcc: 'l@gmail.com', body: "Jenkins Jobs Status ${BUILD_URL}", cc: 'l@gmail.com', from: '', replyTo: '', subject: 'Deployment Failed ', to: 'l@gmail.com'
+					
+					mail bcc: 'l@gmail.com', body: 'Jenkins Jobs Status ${BUILD_URL}', cc: 'l@gmail.com', from: '', replyTo: '', subject: 'Deployment Successful', to: 'l@gmail.com,l2@gmail.com'
+                }
+              }
+        }
+    }
+}	
+
+
