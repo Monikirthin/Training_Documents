@@ -285,3 +285,366 @@ Day 22 : 28th Feb. 2025
    72  clear
    73  history
 
+
+
+************************
+Day 23 : 4th Mar. 2025 
+************************	
+
+	Create Docker Container images
+	
+	1. docker commit 
+	
+		- It is used to create a Container Image based on the existing Container reference
+		
+		Syntax :
+		
+			docker commit <container_id> <new_image_name>
+			
+			docker commit <container_id> <dockerhub_repository_name>/<new_image_name>:<tag_no>
+			
+		Eg. : 
+		
+			docker commit df80e7e4a315 loksaieta/pl-appbuild-img:v1.0
+			
+	
+	2. docker build :
+	
+		- It is used to create a Container Image using the Dockerfile definition
+		- This method is used by the Developers to Containerize the Application Services 
+		- Dockerfile will be created by the Developers and maintained in the Source Code Repositories
+		
+		Dockerfile ::
+		
+			- It composed of Instructions to create the layers of Container Image.
+			
+		
+		vi Dockerfile 
+		
+		FROM ubuntu 
+		RUN apt update -y 
+		RUN apt install git -y 
+		RUN apt install maven -y		
+		
+		save 
+		
+			Syntax:
+			
+				docker build -t <dockerhub_repository_name>/<new_image_name>:<tag_no> .			# '.' denotes the Dockerfile name
+																								# Should run this command from the path where we have Dockerfile.
+			
+			Eg.: 
+		
+				docker build -t loksaieta/pl-java-appbuild-img .
+				
+		
+		
+		Dockerfile Instructions :
+		
+		
+			- FROM 					# To identify the base image
+			
+			- RUN 					# Execute/Run any Package 
+			
+			- COPY 					# Used to Copy the files from the Host Volume to Container Volume 
+			
+			- CP 					# Used to Copy the files within the Container Volumes 
+			
+			- ADD					
+					# Used to Copy the files from external URL to Container Volume as well as from the Host Volume to Container Volume 
+					
+			- EXPOSE				# Define the Container Port 
+			
+			- WORKDIR				# Is used to set the Current working directory 
+			
+			- ENV 					# Set the Environment Variables 
+			
+			- CMD 					# To define the start-up task/command to the container 
+									# This Start-up task/command can be changed at runtime									
+		
+			- ENTRYPOINT			# To define the start-up task/command to the container 
+									# This Start-up task/command cannot be changed at runtime	
+									
+									
+									
+		vi Dockerfile
+		
+		FROM tomcat:8.5
+		COPY target/mywebapp.war /usr/local/tomcat/webapps
+		EXPOSE 8089
+
+
+		docker build -t loksaieta/pl-java-webapp-img .
+
+	
+	docker history <image_name>		# To get the layers of a Container Image
+	
+	
+	Docker Volumes :::
+	
+	
+		Persistant Data/Volume:
+		
+		
+		On Containers perspective :
+		
+			- Stateless Application
+					# The application that will never leave a trace of execution 
+					# Basically Containers are used to run Stateless Applications
+					# Containers are used to execute the tasks. Not to store any data.
+					
+			
+			- Stateful Application 
+					# The application that will leave some trace of execution 
+					# Like Creating Output File / Log Files / Reports 
+			
+		3-Tier Application Archetecture:
+		
+			- Front-End Layer 	- User Interface 
+			
+			- Application Layer - Business Logic 
+			
+			- Back-End Layer	- DataBase 
+			
+		docker volume :
+		
+			- Local Volume 
+				- Host Volume ::::
+				
+		
+		docker volume list		# To get the list of Volumes 
+		
+		docker volume create pl-vol1 
+		
+		docker volume inspect pl-vol1
+		
+				# /var/lib/docker/volumes/pl-vol1/_data
+		
+		docker run -it --mount source=pl-vol1,destination=/pl-vol1 centos bash
+		
+
+
+Next ::
+
+		Publish the Images 
+		
+		Container Orchestration 
+		
+			 - Docker Compose 
+			 - Docker Swarm 
+			 
+			 - Kubernetes 
+
+   88  clear
+   89  history
+   90  ckear
+   91  clear
+   92  docker images
+   93  docker ps
+   94  docker ps -a
+   95  docker ps
+   96  docker ps -a
+   97  docker volume
+   98  docker volumes
+   99  clear
+  100  docker volume
+  101  clear
+  102  docker volume list
+  103  docker volume create pl-vol1
+  104  docker volume list
+  105  docker volume inspect pl-vol1
+  106  cd /var/lib/docker/volumes/pl-vol1/_data
+  107  ls
+  108  cd ..
+  109  clear
+  110  ls
+  111  cd pl-vol1/
+  112  clear
+  113  ls
+  114  cd _data/
+  115  pwd
+  116  ls
+  117  clear
+  118  docker images
+  119  clear
+  120  docker run -it centos bash
+  121  docker run -it --mount source=pl-vol1,destination=/pl-vol1 centos bash
+  122  clear
+  123  ls
+  124  echo "rec1" >> hostfile1.txt
+  125  ls
+  126  cd ~
+  127  docker run -it --mount source=pl-vol1,destination=/pl-vol1 centos bash
+  128  clear
+  129  history
+
+
+				
+
+	
+************************
+Day 24 : 6th Mar. 2025 
+************************		
+
+	Publish the Images to DockerHub
+	
+	Container Orchestration 
+	
+		 - Docker Compose 
+		 - Overview of Docker Swarm 
+		 
+		 - Kubernetes	
+		 
+		 
+		
+		
+	Publish the Images to DockerHub :
+	
+	
+	1. Build an application image
+	
+	2. Publish to DockerHub Registry using Docker Cli Command 
+	
+		Syntax: 
+		
+		docker push <dockerhub_repository_name>/<new_image_name>:<tag_no>
+		
+			- Create a DockerHub Access Token
+			
+			- Login to DockerHub 
+			
+				--> User_Name 	:		docker login -u loksaieta
+				
+				--> Access_Token :		fGA
+				
+		
+		Eg.: 	
+		
+		docker push loksaieta/pl-appbuild-img:v1.0
+		
+	
+				
+	
+	Container Orchestration ::: 
+	
+		 - Docker Compose 
+		 - Overview of Docker Swarm 
+		 
+		 - Kubernetes
+
+
+		- Docker Compose :
+		
+			- It is plugin/extension to Docker engine, it is used to execute multiple containers as a Service.
+			
+			- Install Docker Compose: https://docs.docker.com/compose/install/linux/#install-the-plugin-manually
+			
+			
+			3 - Tier Application Archetecture :
+			
+			User_Sign_In Micro-Service Service :
+			
+				- Front-End Layer 		--> User Interface 		--> img1 --> C1
+				
+				- Application Layer 	--> Business Logic 		--> img2 --> C2 
+				
+				- Back-End Layer 		--> Database 			--> img3 --> C3 
+		
+		
+			Create a manifest file using *.yaml scripts
+			
+			Yaml Scripts :		Declarative Script 
+								Keys & Values Pair 
+	
+			vi mywebapp1.yaml
+			
+			Service :
+				Name : svc1
+				
+					C1
+					C2
+					C3 
+					
+			docker compose up 			# Used to Start a service defined in the manifest file 
+			
+			docker compose down 		# Used to Stop a service defined in the manifest file 
+					
+
+
+# Manual Installation of Docker Compose :::
+			
+DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+mkdir -p $DOCKER_CONFIG/cli-plugins
+curl -SL https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+
+chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+	
+docker compose version
+
+vi docker-compose.yaml
+
+
+
+### Yaml Files are based on Keys & Values -- key:value Pairs
+
+version: '3'
+services:
+  webserv1:
+    image: "tomcat:8.0"
+    ports:
+      - 8098:8080
+  dbserv1:
+    image: "redis:alpine"
+	
+docker compose up 
+
+
+				
+		
+		- Docker Swarm :
+		
+			- Is a Container Orchestration Tool, used to ensure High Availability of the Containers.
+			
+			- Creates Replicas of Containers 
+			
+			- No Auto-Scaling the Container Instance 	--> Scale-up / scale-down
+			
+			- No Load-Balancing
+			
+			- Docker Swarm is limit to Docker Containers only.
+			
+			- Docker Swarm is not capable to handle production workloads 
+			
+			
+			Prod-Environment:
+			
+				Prod_Server1
+				Prod_Server2
+				Prod_Server3
+			
+				- Front-End Layer 		--> User Interface 		--> img1 --> C1.1,C1.2,C1.3
+				
+				- Application Layer 	--> Business Logic 		--> img2 --> C2.1,C2.2,C2.3 
+				
+				- Back-End Layer 		--> Database 			--> img3 --> C3.1,C3.2,C3.3 
+
+
+	Kubernetes :::
+	
+		- Is a Open-Source Container Orchestration Tool.
+		
+		- Ensure High Availability of the Pods/Containers by creating replicas of pods.
+		
+		- Support Auto-Scaling and Load Balancing 
+		
+		- Able to handle / provision hugh volumes to execute containerized application services.
+		
+		- Self-Healing!
+		
+		- Persistance Volumes 
+		
+
+					
+			
+		Deployments
+	
